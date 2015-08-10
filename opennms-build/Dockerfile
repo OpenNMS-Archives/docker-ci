@@ -21,9 +21,10 @@ RUN apt-get -y install oracle-java7-installer oracle-java8-installer
 RUN apt-get -y install perl-base perl-modules
 
 # build directory
-WORKDIR /data
-VOLUME "${WORKDIR}"
+DATADIR /data
+WORKDIR "${DATADIR}"
+VOLUME "${DATADIR}"
 
 # The script used to build the source
-ADD "build-opennms.sh" "${WORKDIR}/build-opennms.sh"
-ENTRYPOINT "${WORKDIR}/build-opennms.sh"
+ADD "build-opennms.sh" "${DATADIR}/build-opennms.sh"
+ENTRYPOINT "${DATADIR}/build-opennms.sh"

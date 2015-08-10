@@ -25,5 +25,5 @@ ENV DATADIR /data
 VOLUME "${DATADIR}"
 
 # The script used to build the source
-ADD "build-opennms.sh" "${DATADIR}/build-opennms.sh"
-ENTRYPOINT "${DATADIR}/build-opennms.sh"
+ADD "build-opennms.sh" /root/build-opennms.sh
+ENTRYPOINT /root/build-opennms.sh

@@ -30,7 +30,7 @@ tar -xzf "$TARBALL_FILE"
 cd "$TOPDIR"
 
 # build
-./compile.pl
+./compile.pl -Dmaven.test.skip.exec=true
 
 # build javadoc
-./compile.pl javadoc:aggregate
+./compile.pl -Dmaven.test.skip.exec=true javadoc:aggregate

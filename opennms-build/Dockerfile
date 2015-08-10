@@ -21,7 +21,7 @@ RUN apt-get -y install oracle-java7-installer oracle-java8-installer
 RUN apt-get -y install perl-base perl-modules
 
 # build directory
-DATADIR /data
+ENV DATADIR /data
 VOLUME "${DATADIR}"
 
 # The script used to build the source

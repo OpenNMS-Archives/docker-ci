@@ -22,7 +22,6 @@ RUN apt-get -y install perl-base perl-modules
 
 # build directory
 DATADIR /data
-WORKDIR "${DATADIR}"
 VOLUME "${DATADIR}"
 
 # The script used to build the source

@@ -26,6 +26,7 @@ cd /data
 
 # unpack the OpenNMS tarball
 TOPDIR=`tar -tzf "$TARBALL_FILE"  | grep / | sed -e 's,/.*$,,' | head -n 1`
+rm -rf "$TOPDIR"
 tar -xzf "$TARBALL_FILE"
 cd "$TOPDIR"
 

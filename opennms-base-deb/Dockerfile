@@ -19,5 +19,7 @@ RUN apt-get -y install oracle-java7-installer oracle-java8-installer
 ENV DATADIR /data
 VOLUME "${DATADIR}"
 
-# common script files
-ADD common-scripts/*.sh /root/
+RUN mkdir -p /docker-entrypoint-initdb.d
+
+COPY docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]

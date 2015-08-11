@@ -21,5 +21,7 @@ RUN wget --quiet --no-check-certificate --no-cookies --header "Cookie: oraclelic
 ENV DATADIR /data
 VOLUME "${DATADIR}"
 
-# common script files
-ADD common-scripts/*.sh /root/
+RUN mkdir -p /docker-entrypoint-initdb.d
+
+COPY docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]

@@ -1,2 +1,3 @@
 .*.swp
-common-scripts/
+init.d/
+!/init.d/

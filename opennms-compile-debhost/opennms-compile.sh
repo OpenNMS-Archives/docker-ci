@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+
+ARGS=("$@")
 
 TARBALL_COUNT=`ls -1 /data/*.tar.gz | wc -l`
 if [ $TARBALL_COUNT -eq 0 ]; then
@@ -31,7 +33,4 @@ tar -xzf "$TARBALL_FILE"
 cd "$TOPDIR"
 
 # build
-./compile.pl -Dmaven.test.skip.exec=true
-
-# build javadoc
-./compile.pl -Dmaven.test.skip.exec=true javadoc:aggregate
+./compile.pl "$ARGS"

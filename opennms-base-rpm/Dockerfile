@@ -22,6 +22,7 @@ ENV DATADIR /data
 VOLUME "${DATADIR}"
 
 RUN mkdir -p /docker-entrypoint-initdb.d
+COPY init.d/* /docker-entrypoint-initdb.d/
 
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]

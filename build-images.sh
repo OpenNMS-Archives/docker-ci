@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
-(docker rm $(docker ps -a -q)) || :
-(docker images --no-trunc | grep none | awk '{ print $3 }' | xargs docker rmi) || :
+(docker rm $(docker ps -aq)) || :
+(docker rmi $(docker images --filter dangling=true --quiet)) || :
 
 for IMAGE in \
 	opennms-base-rpm \

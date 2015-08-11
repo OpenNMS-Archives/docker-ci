@@ -32,5 +32,13 @@ rm -rf "$TOPDIR"
 tar -xzf "$TARBALL_FILE"
 cd "$TOPDIR"
 
+EXTRA_ARGS=()
+
+if [ -n "$POSTGRES_PORT_5432_TCP_ADDR" ] && [ -n "$POSTGRES_PORT_5432_TCP_PORT" ]; then
+	EXTRA_ARGS+=("-Dmock.db.url=jdbc:postgresql://$POSTGRES_PORT_5432_TCP_ADDR:$POSTGRES_PORT_5432_TCP_PORT/")
+	EXTRA_ARGS+=("-Dmock.db.adminUser=postgres")
+	EXTRA_ARGS+=("-Dmock.db.adminPassword=bamboo")
+fi
+
 # build
-./compile.pl "$ARGS"
+./compile.pl "$EXTRA_ARGS" "$ARGS"

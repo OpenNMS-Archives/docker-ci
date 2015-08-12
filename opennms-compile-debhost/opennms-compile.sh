@@ -41,4 +41,4 @@ if [ -n "$POSTGRES_PORT_5432_TCP_ADDR" ] && [ -n "$POSTGRES_PORT_5432_TCP_PORT" 
 fi
 
 # build
-./compile.pl "$EXTRA_ARGS" "$ARGS"
+./compile.pl "${EXTRA_ARGS[@]}" "${ARGS[@]}"

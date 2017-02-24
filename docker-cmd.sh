@@ -2,21 +2,23 @@
 
 echo "command:" "$@"
 if [ -z "$3" ]; then
-	echo "usage: $0 <git_url> <git_branch> <git_commit> [builddir]"
+	echo "usage: $0 <git_url> <git_branch> <git_commit> [workdir]"
 	exit 1
 fi
 
 GIT_URL="$1"
 GIT_BRANCH="$2"
 GIT_COMMIT="$3"
-BUILDDIR="$4"
+WORKDIR="$4"
 
-if [ -z "$BUILDDIR" ]; then
-	BUILDDIR="/src"
+if [ -z "$WORKDIR" ]; then
+	WORKDIR="/src"
 fi
-rm -rf "$BUILDDIR"
-mkdir -p "$BUILDDIR"
-cd "$BUILDDIR" || exit 1
+
+WORKDIR="${WORKDIR}/docker-build"
+rm -rf "${WORKDIR}"
+mkdir -p "${WORKDIR}"
+cd "$WORKDIR" || exit 1
 
 echo "* docker environment:"
 env
@@ -36,7 +38,7 @@ echo "* cloning $GIT_URL:"
 git clone --depth 1 --branch "$GIT_BRANCH" "$GIT_URL" . || exit 1
 git reset --hard "$GIT_COMMIT" || exit 1
 
-echo "* building in $BUILDDIR:"
+echo "* building in $WORKDIR:"
 
 # run compile
 echo ./compile.pl \

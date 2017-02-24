@@ -64,6 +64,6 @@ echo ./compile.pl \
 
 RET=$?
 
-find ./* -type d -print0 -name surefire-reports -o -name failsafe-reports | xargs -0 tar -cvzf junit-output.tar.gz
+find ./* -type d -print0 -name surefire-reports -o -name failsafe-reports | xargs -0 tar -czf junit-output.tar.gz
 
 exit $RET

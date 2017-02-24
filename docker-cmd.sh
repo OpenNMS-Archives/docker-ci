@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "command: $@"
+echo "command:" "$@"
 if [ -z "$3" ]; then
 	echo "usage: $0 <git_url> <git_branch> <git_commit> [builddir]"
 	exit 1
@@ -16,7 +16,7 @@ if [ -z "$BUILDDIR" ]; then
 fi
 rm -rf "$BUILDDIR"
 mkdir -p "$BUILDDIR"
-cd "$BUILDDIR"
+cd "$BUILDDIR" || exit 1
 
 echo "* docker environment:"
 env
@@ -25,7 +25,7 @@ echo "* installing psql"
 if [ -x /usr/bin/apt-get ]; then
 	apt-get update
 	apt-get -y install postgresql-client
-else if [ -x /usr/bin/yum ]; then
+elif [ -x /usr/bin/yum ]; then
 	yum -y install postgresql
 else
 	echo "no apt-get nor yum, not sure what to do"
@@ -62,6 +62,6 @@ echo ./compile.pl \
 
 RET=$?
 
-find * -type d -name surefire-reports -o -name failsafe-reports | xargs tar -cvzf junit-output.tar.gz
+find ./* -type d -print0 -name surefire-reports -o -name failsafe-reports | xargs -0 tar -cvzf junit-output.tar.gz
 
 exit $RET

@@ -21,7 +21,7 @@ cd "$BUILDDIR"
 echo "* docker environment:"
 env
 
-./wait-for-postgres.sh
+/wait-for-postgres.sh
 
 echo "* cloning $GIT_URL:"
 git clone --depth 1 --branch "$GIT_BRANCH" "$GIT_URL" . || exit 1

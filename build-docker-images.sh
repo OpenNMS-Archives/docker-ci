@@ -1,3 +1,3 @@
 #!/bin/sh -e
 
-docker build -t opennms/itests .
+docker build -t opennmsbamboo/itests .

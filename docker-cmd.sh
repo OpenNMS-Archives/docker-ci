@@ -25,10 +25,21 @@ git reset --hard "$GIT_COMMIT" || exit 1
 echo "* building in $BUILDDIR:"
 
 # run compile
+echo ./compile.pl \
+	-Dorg.opennms.core.test-api.snmp.useMockSnmpStrategy=false \
+	-DupdatePolicy=never \
+	-Dmock.db.url="jdbc:postgresql://${POSTGRES_PORT_5432_TCP_ADDR}:${POSTGRES_PORT_5432_TCP_PORT}/" \
+	-Dmock.db.adminUser="postgres" \
+	-Dmock.db.adminPassword="${POSTGRES_ENV_POSTGRES_PASSWORD}" \
+	-t \
+	-v \
+	-Pbuild-bamboo \
+	install
 ./compile.pl \
 	-Dorg.opennms.core.test-api.snmp.useMockSnmpStrategy=false \
 	-DupdatePolicy=never \
 	-Dmock.db.url="jdbc:postgresql://${POSTGRES_PORT_5432_TCP_ADDR}:${POSTGRES_PORT_5432_TCP_PORT}/" \
+	-Dmock.db.adminUser="postgres" \
 	-Dmock.db.adminPassword="${POSTGRES_ENV_POSTGRES_PASSWORD}" \
 	-t \
 	-v \

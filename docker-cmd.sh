@@ -34,6 +34,13 @@ else
 fi
 /wait-for-postgres.sh
 
+echo "* setting up opennms user"
+PGPASSWORD="${OPENNMS_POSTGRES_ENV_POSTGRES_PASSWORD}" psql \
+	-h "${OPENNMS_POSTGRES_PORT_5432_TCP_ADDR}" \
+	-p "${OPENNMS_POSTGRES_PORT_5432_TCP_PORT}" \
+	-U postgres \
+	-c "CREATE USER opennms CREATEDB SUPERUSER LOGIN PASSWORD 'opennms';"
+
 echo "* cloning $GIT_URL:"
 git clone --depth 1 --branch "$GIT_BRANCH" "$GIT_URL" . || exit 1
 git reset --hard "$GIT_COMMIT" || exit 1

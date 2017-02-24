@@ -64,6 +64,7 @@ echo ./compile.pl \
 	-Dmock.db.adminUser="postgres" \
 	-Dmock.db.adminPassword="${OPENNMS_POSTGRES_ENV_POSTGRES_PASSWORD}" \
 	-DrunPingTests=false \
+	-Dbuild.skip.tarball=true \
 	-t \
 	-v \
 	-Pbuild-bamboo \
@@ -75,6 +76,7 @@ echo ./compile.pl \
 	-Dmock.db.adminUser="postgres" \
 	-Dmock.db.adminPassword="${OPENNMS_POSTGRES_ENV_POSTGRES_PASSWORD}" \
 	-DrunPingTests=false \
+	-Dbuild.skip.tarball=true \
 	-t \
 	-v \
 	-Pbuild-bamboo \

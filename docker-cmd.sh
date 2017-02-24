@@ -18,6 +18,9 @@ rm -rf "$BUILDDIR"
 mkdir -p "$BUILDDIR"
 cd "$BUILDDIR"
 
+echo "* docker environment:"
+env
+
 echo "* cloning $GIT_URL:"
 git clone --depth 1 --branch "$GIT_BRANCH" "$GIT_URL" . || exit 1
 git reset --hard "$GIT_COMMIT" || exit 1

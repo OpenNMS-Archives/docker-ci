@@ -63,6 +63,7 @@ echo ./compile.pl \
 	-Dmock.db.url="jdbc:postgresql://${OPENNMS_POSTGRES_PORT_5432_TCP_ADDR}:${OPENNMS_POSTGRES_PORT_5432_TCP_PORT}/" \
 	-Dmock.db.adminUser="postgres" \
 	-Dmock.db.adminPassword="${OPENNMS_POSTGRES_ENV_POSTGRES_PASSWORD}" \
+	-DrunPingTests=false \
 	-t \
 	-v \
 	-Pbuild-bamboo \
@@ -73,6 +74,7 @@ echo ./compile.pl \
 	-Dmock.db.url="jdbc:postgresql://${OPENNMS_POSTGRES_PORT_5432_TCP_ADDR}:${OPENNMS_POSTGRES_PORT_5432_TCP_PORT}/" \
 	-Dmock.db.adminUser="postgres" \
 	-Dmock.db.adminPassword="${OPENNMS_POSTGRES_ENV_POSTGRES_PASSWORD}" \
+	-DrunPingTests=false \
 	-t \
 	-v \
 	-Pbuild-bamboo \

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -x
 
 echo "command:" "$@"
 if [ -z "$3" ]; then

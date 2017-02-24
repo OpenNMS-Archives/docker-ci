@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -x
 
 COUNT=1
 while [ $COUNT -lt 120 ]; do

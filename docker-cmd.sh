@@ -31,9 +31,9 @@ echo "* building in $BUILDDIR:"
 echo ./compile.pl \
 	-Dorg.opennms.core.test-api.snmp.useMockSnmpStrategy=false \
 	-DupdatePolicy=never \
-	-Dmock.db.url="jdbc:postgresql://${POSTGRES_PORT_5432_TCP_ADDR}:${POSTGRES_PORT_5432_TCP_PORT}/" \
+	-Dmock.db.url="jdbc:postgresql://${OPENNMS_POSTGRES_PORT_5432_TCP_ADDR}:${OPENNMS_POSTGRES_PORT_5432_TCP_PORT}/" \
 	-Dmock.db.adminUser="postgres" \
-	-Dmock.db.adminPassword="${POSTGRES_ENV_POSTGRES_PASSWORD}" \
+	-Dmock.db.adminPassword="${OPENNMS_POSTGRES_ENV_POSTGRES_PASSWORD}" \
 	-t \
 	-v \
 	-Pbuild-bamboo \
@@ -41,9 +41,9 @@ echo ./compile.pl \
 ./compile.pl \
 	-Dorg.opennms.core.test-api.snmp.useMockSnmpStrategy=false \
 	-DupdatePolicy=never \
-	-Dmock.db.url="jdbc:postgresql://${POSTGRES_PORT_5432_TCP_ADDR}:${POSTGRES_PORT_5432_TCP_PORT}/" \
+	-Dmock.db.url="jdbc:postgresql://${OPENNMS_POSTGRES_PORT_5432_TCP_ADDR}:${OPENNMS_POSTGRES_PORT_5432_TCP_PORT}/" \
 	-Dmock.db.adminUser="postgres" \
-	-Dmock.db.adminPassword="${POSTGRES_ENV_POSTGRES_PASSWORD}" \
+	-Dmock.db.adminPassword="${OPENNMS_POSTGRES_ENV_POSTGRES_PASSWORD}" \
 	-t \
 	-v \
 	-Pbuild-bamboo \

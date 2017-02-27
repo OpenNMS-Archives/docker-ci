@@ -102,6 +102,7 @@ echo ./compile.pl \
 	-v \
 	-Pbuild-bamboo \
 	install
+
 ./compile.pl \
 	-Dorg.opennms.core.test-api.snmp.useMockSnmpStrategy=false \
 	-DupdatePolicy=never \
@@ -115,8 +116,4 @@ echo ./compile.pl \
 	-Pbuild-bamboo \
 	install 2>&1 | tee output.log | grep -E '(Running org|Tests run: )'
 
-RET=$?
-
-find ./* -type d -print0 \( -name surefire-reports -o -name failsafe-reports \) | xargs -0 tar -czf junit-output.tar.gz output.log
-
-exit $RET
+exit $?

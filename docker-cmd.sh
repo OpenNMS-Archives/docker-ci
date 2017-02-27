@@ -15,6 +15,8 @@ if [ -z "$WORKDIR" ]; then
 	WORKDIR="/src"
 fi
 
+find "$WORKDIR" -type f
+
 WORKDIR="${WORKDIR}/docker-build"
 rm -rf "${WORKDIR}"
 mkdir -p "${WORKDIR}"
@@ -55,6 +57,9 @@ echo "* removing failing tests for now..."
 find ./* \( -name \*ConnectionFactoryTest.java -o -name \*ConnectionFactoryIT.java \) -exec rm -rf {} \;
 
 echo "* building in $WORKDIR:"
+
+# heartbeat  :)
+(while true; do sleep 5; date; done) &
 
 # run compile
 echo ./compile.pl \

@@ -1,24 +1,49 @@
 #!/bin/sh
 
-echo "command:" "$@"
-if [ -z "$3" ]; then
-	echo "usage: $0 <git_url> <git_branch> <git_commit> [workdir]"
+usage() {
+	echo "usage: $0 <-b workdir | git_url git_branch git_commit [workdir]>"
+	echo ""
+	echo "	-b   Enable build-in-place mode.  This assumes that the git repository is checked out to the specified working directory."
+	echo ""
 	exit 1
-fi
+}
 
-GIT_URL="$1"
-GIT_BRANCH="$2"
-GIT_COMMIT="$3"
-WORKDIR="$4"
+echo "command:" "$@"
+BUILD_IN_PLACE=0
+WORKDIR="/src"
+GIT_URL="https://github.com/OpenNMS/opennms.git"
+GIT_BRANCH="develop"
+GIT_COMMIT="develop"
 
-if [ -z "$WORKDIR" ]; then
-	WORKDIR="/src"
+while getopts b OPT; do
+	case $OPT in
+		b) BUILD_IN_PLACE=1
+			;;
+	esac
+done
+
+if [ "$BUILD_IN_PLACE" -eq 1 ]; then
+	shift
+	WORKDIR="$1"
+	if [ -z "${WORKDIR}" ]; then
+		usage
+	fi
+	echo "building in place: $WORKDIR"
+else
+	GIT_URL="$1"
+	GIT_BRANCH="$2"
+	GIT_COMMIT="$3"
+	if [ -z "${GIT_COMMIT}" ]; then
+		usage
+	fi
+	if [ -n "$4" ]; then
+		WORKDIR="$4"
+	fi
+	echo "building repo ${GIT_URL} from branch ${GIT_BRANCH} (${GIT_COMMIT})"
 fi
 
 find "$WORKDIR" -type f
 
-WORKDIR="${WORKDIR}/docker-build"
-rm -rf "${WORKDIR}"
 mkdir -p "${WORKDIR}"
 cd "$WORKDIR" || exit 1
 
@@ -43,9 +68,12 @@ PGPASSWORD="${OPENNMS_POSTGRES_ENV_POSTGRES_PASSWORD}" psql \
 	-U postgres \
 	-c "CREATE USER opennms CREATEDB SUPERUSER LOGIN PASSWORD 'opennms';"
 
-echo "* cloning $GIT_URL:"
-git clone --depth 1 --branch "$GIT_BRANCH" "$GIT_URL" . || exit 1
-git reset --hard "$GIT_COMMIT" || exit 1
+if [ "$BUILD_IN_PLACE" -eq 0 ]; then
+	echo "* cloning $GIT_URL:"
+	git clone --depth 1 --branch "$GIT_BRANCH" "$GIT_URL" . || exit 1
+	git reset --hard "$GIT_COMMIT" || exit 1
+fi
+git clean -fdx || exit 1
 
 echo "* fixing test opennms-datasources.xml files"
 find . -type f -name opennms-datasources.xml | grep /src/test/ | while read -r FILE; do

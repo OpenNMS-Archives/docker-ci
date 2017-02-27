@@ -80,10 +80,10 @@ echo ./compile.pl \
 	-t \
 	-v \
 	-Pbuild-bamboo \
-	install
+	install 2>&1 | tee output.log | grep -E '(Running org|Tests run: )'
 
 RET=$?
 
-find ./* -type d -print0 -name surefire-reports -o -name failsafe-reports | xargs -0 tar -czf junit-output.tar.gz
+find ./* -type d -print0 \( -name surefire-reports -o -name failsafe-reports \) | xargs -0 tar -czf junit-output.tar.gz output.log
 
 exit $RET

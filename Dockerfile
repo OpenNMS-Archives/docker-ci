@@ -24,7 +24,7 @@ RUN yum -y install  \
 	which \
 	&& yum -y clean all
 
-COPY *.sh /
+COPY *.sh blacklist-files.txt /
 
 #ARG GIT_URL=https://github.com/OpenNMS/opennms.git
 #ARG GIT_HASH

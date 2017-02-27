@@ -1,0 +1,6 @@
+core/db/src/test/java/org/opennms/core/db/C3P0ConnectionFactoryTest.java
+core/db/src/test/java/org/opennms/core/db/ConnectionFactoryTest.java
+core/db/src/test/java/org/opennms/core/db/C3P0ConnectionFactoryIT.java
+core/db/src/test/java/org/opennms/core/db/ConnectionFactoryIT.java
+core/db/src/test/java/org/opennms/core/db/HikariCPConnectionFactoryIT.java
+opennms-icmp/opennms-icmp-proxy-rpc-impl/src/test/java/org/opennms/netmgt/icmp/proxy/LocationAwarePingSweepClientIT.java

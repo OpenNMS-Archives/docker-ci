@@ -82,7 +82,11 @@ find . -type f -name opennms-datasources.xml | grep /src/test/ | while read -r F
 done
 
 echo "* removing failing tests for now..."
-find ./* \( -name \*ConnectionFactoryTest.java -o -name \*ConnectionFactoryIT.java \) -exec rm -rf {} \;
+cat /blacklist-files.txt | while read -r FILE; do
+	if [ -n "$FILE" ] && [ -r "$FILE" ]; then
+		rm -f "$FILE"
+	fi
+done
 
 echo "* building in $WORKDIR:"
 

@@ -20,16 +20,17 @@ while getopts bu: OPT; do
 	case $OPT in
 		b) BUILD_IN_PLACE=1
 			;;
-		u) HOST_UID="$OPT"
-			;;
 	esac
 done
+
+if [ -f .git/HEAD ]; then
+	HOST_UID="$(ls -lan .git/HEAD | awk '{print $3 }')"
+fi
 
 if [ -n "$HOST_UID" ] && [ "$(id -u)" -ne "$HOST_UID" ]; then
 	exec sudo -u "#${HOST_UID}" "$0" "$@"
 elif [ -z "$HOST_UID" ]; then
 	echo "WARNING: \$HOST_UID is not set!"
-	exit 1
 fi
 
 if [ "$BUILD_IN_PLACE" -eq 1 ]; then
@@ -37,6 +38,11 @@ if [ "$BUILD_IN_PLACE" -eq 1 ]; then
 	WORKDIR="$1"
 	if [ -z "${WORKDIR}" ]; then
 		usage
+	fi
+
+	if [ -z "$HOST_UID" ]; then
+		echo "ERROR: setting \$HOST_UID is required in build-in-place mode."
+		exit 1
 	fi
 	echo "building in place: $WORKDIR"
 else

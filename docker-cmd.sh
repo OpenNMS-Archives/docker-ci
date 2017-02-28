@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 usage() {
 	echo "usage: $0 <-b workdir | git_url git_branch git_commit [workdir]>"
@@ -15,10 +15,12 @@ WORKDIR="/src"
 GIT_URL="https://github.com/OpenNMS/opennms.git"
 GIT_BRANCH="develop"
 GIT_COMMIT="develop"
+declare ARGS=()
 
 while getopts bu: OPT; do
 	case $OPT in
 		b) BUILD_IN_PLACE=1
+			ARGS+=('-b')
 			;;
 	esac
 done
@@ -26,6 +28,7 @@ done
 if [ "$BUILD_IN_PLACE" -eq 1 ]; then
 	shift
 	WORKDIR="$1"
+	ARGS+=("$WORKDIR")
 	if [ -z "${WORKDIR}" ]; then
 		usage
 	fi
@@ -33,6 +36,7 @@ else
 	GIT_URL="$1"
 	GIT_BRANCH="$2"
 	GIT_COMMIT="$3"
+	ARGS+=("$GIT_URL" "$GIT_BRANCH" "$GIT_COMMIT")
 	if [ -z "${GIT_COMMIT}" ]; then
 		usage
 	fi
@@ -61,7 +65,7 @@ fi
 
 if [ -n "$HOST_UID" ] && [ "$(id -u)" -ne "$HOST_UID" ]; then
 	SUDO="$(which sudo)"
-	exec "$SUDO" -u "#${HOST_UID}" "$0" "$@"
+	exec "$SUDO" -u "#${HOST_UID}" "$0" "${ARGS[@]}"
 elif [ -z "$HOST_UID" ]; then
 	if [ "$BUILD_IN_PLACE" -eq 1 ]; then
 		echo "ERROR: setting \$HOST_UID is required in build-in-place mode."

@@ -9,10 +9,6 @@ usage() {
 }
 
 
-if [ -n "$HOST_UID" ] && [ "$(id -u)" -ne "$HOST_UID" ]; then
-	exec sudo -u "#${HOST_UID}" "$0" "$@"
-fi
-
 echo "command:" "$@"
 BUILD_IN_PLACE=0
 WORKDIR="/src"
@@ -20,12 +16,21 @@ GIT_URL="https://github.com/OpenNMS/opennms.git"
 GIT_BRANCH="develop"
 GIT_COMMIT="develop"
 
-while getopts b OPT; do
+while getopts bu: OPT; do
 	case $OPT in
 		b) BUILD_IN_PLACE=1
 			;;
+		u) HOST_UID="$OPT"
+			;;
 	esac
 done
+
+if [ -n "$HOST_UID" ] && [ "$(id -u)" -ne "$HOST_UID" ]; then
+	exec sudo -u "#${HOST_UID}" "$0" "$@"
+elif [ -z "$HOST_UID" ]; then
+	echo "WARNING: \$HOST_UID is not set!"
+	exit 1
+fi
 
 if [ "$BUILD_IN_PLACE" -eq 1 ]; then
 	shift

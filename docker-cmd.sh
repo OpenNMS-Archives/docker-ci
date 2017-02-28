@@ -41,6 +41,15 @@ else
 	fi
 fi
 
+echo "* installing sudo and psql"
+if [ -x /usr/bin/apt-get ]; then
+	apt-get update
+	apt-get -y install sudo postgresql-client
+elif [ -x /usr/bin/yum ]; then
+	yum -y install sudo postgresql
+else
+	echo "no apt-get nor yum, not sure what to do"
+fi
 #find "$WORKDIR" -type f
 
 mkdir -p "${WORKDIR}"
@@ -71,15 +80,6 @@ fi
 echo "* docker environment:"
 env
 
-echo "* installing psql"
-if [ -x /usr/bin/apt-get ]; then
-	apt-get update
-	apt-get -y install postgresql-client
-elif [ -x /usr/bin/yum ]; then
-	yum -y install postgresql
-else
-	echo "no apt-get nor yum, not sure what to do"
-fi
 /wait-for-postgres.sh
 
 echo "* setting up opennms user"

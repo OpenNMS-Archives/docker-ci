@@ -8,6 +8,19 @@ usage() {
 	exit 1
 }
 
+install_packages() {
+	echo "* installing sudo and psql"
+	if [ -x /usr/bin/apt-get ]; then
+		apt-get update
+		apt-get -y install sudo postgresql-client
+	elif [ -x /usr/bin/yum ]; then
+		yum -y install sudo postgresql
+	else
+		echo "no apt-get nor yum, not sure what to do"
+		exit 1
+	fi
+}
+
 
 echo "command:" "$0" "$@"
 BUILD_IN_PLACE=0
@@ -45,17 +58,6 @@ else
 	fi
 fi
 
-echo "* installing sudo and psql"
-if [ -x /usr/bin/apt-get ]; then
-	apt-get update
-	apt-get -y install sudo postgresql-client
-elif [ -x /usr/bin/yum ]; then
-	yum -y install sudo postgresql
-else
-	echo "no apt-get nor yum, not sure what to do"
-fi
-#find "$WORKDIR" -type f
-
 mkdir -p "${WORKDIR}"
 cd "$WORKDIR" || exit 1
 
@@ -64,6 +66,7 @@ if [ -f .git/HEAD ]; then
 fi
 
 if [ -n "$HOST_UID" ] && [ "$(id -u)" -ne "$HOST_UID" ]; then
+	install_packages
 	SUDO="$(which sudo)"
 	exec "$SUDO" -u "#${HOST_UID}" -E "$0" "${ARGS[@]}"
 elif [ -z "$HOST_UID" ]; then
@@ -73,6 +76,7 @@ elif [ -z "$HOST_UID" ]; then
 	else
 		echo "WARNING: \$HOST_UID is not set!"
 	fi
+	install_packages
 fi
 
 if [ "$BUILD_IN_PLACE" -eq 1 ]; then

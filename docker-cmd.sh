@@ -23,28 +23,12 @@ while getopts bu: OPT; do
 	esac
 done
 
-if [ -f .git/HEAD ]; then
-	HOST_UID="$(ls -lan .git/HEAD | awk '{print $3 }')"
-fi
-
-if [ -n "$HOST_UID" ] && [ "$(id -u)" -ne "$HOST_UID" ]; then
-	exec sudo -u "#${HOST_UID}" "$0" "$@"
-elif [ -z "$HOST_UID" ]; then
-	echo "WARNING: \$HOST_UID is not set!"
-fi
-
 if [ "$BUILD_IN_PLACE" -eq 1 ]; then
 	shift
 	WORKDIR="$1"
 	if [ -z "${WORKDIR}" ]; then
 		usage
 	fi
-
-	if [ -z "$HOST_UID" ]; then
-		echo "ERROR: setting \$HOST_UID is required in build-in-place mode."
-		exit 1
-	fi
-	echo "building in place: $WORKDIR"
 else
 	GIT_URL="$1"
 	GIT_BRANCH="$2"
@@ -55,13 +39,33 @@ else
 	if [ -n "$4" ]; then
 		WORKDIR="$4"
 	fi
-	echo "building repo ${GIT_URL} from branch ${GIT_BRANCH} (${GIT_COMMIT})"
 fi
 
 #find "$WORKDIR" -type f
 
 mkdir -p "${WORKDIR}"
 cd "$WORKDIR" || exit 1
+
+if [ -f .git/HEAD ]; then
+	HOST_UID="$(ls -lan .git/HEAD | awk '{print $3 }')"
+fi
+
+if [ -n "$HOST_UID" ] && [ "$(id -u)" -ne "$HOST_UID" ]; then
+	exec sudo -u "#${HOST_UID}" "$0" "$@"
+elif [ -z "$HOST_UID" ]; then
+	if [ "$BUILD_IN_PLACE" -eq 1 ]; then
+		echo "ERROR: setting \$HOST_UID is required in build-in-place mode."
+		exit 1
+	else
+		echo "WARNING: \$HOST_UID is not set!"
+	fi
+fi
+
+if [ "$BUILD_IN_PLACE" -eq 1 ]; then
+	echo "building in place: $WORKDIR"
+else
+	echo "building repo ${GIT_URL} from branch ${GIT_BRANCH} (${GIT_COMMIT})"
+fi
 
 echo "* docker environment:"
 env

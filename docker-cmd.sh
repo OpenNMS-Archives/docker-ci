@@ -8,11 +8,10 @@ usage() {
 	exit 1
 }
 
-fix_ownership() {
-	if [ -n "$HOST_UID" ] && [ -n "$HOST_GID" ] && [ $HOST_UID -gt 0 ] && [ $HOST_GID -gt 0 ]; then
-		chown -R "${HOST_UID}:${HOST_GID}" "$1"
-	fi
-}
+
+if [ -n "$HOST_UID" ] && [ "$(id -u)" -ne "$HOST_UID" ]; then
+	exec sudo -u "#${HOST_UID}" "$0" "$@"
+fi
 
 echo "command:" "$@"
 BUILD_IN_PLACE=0
@@ -52,8 +51,6 @@ fi
 
 mkdir -p "${WORKDIR}"
 cd "$WORKDIR" || exit 1
-
-fix_ownership "${WORKDIR}"
 
 echo "* docker environment:"
 env
@@ -127,7 +124,5 @@ echo ./compile.pl \
 	-v \
 	-Pbuild-bamboo \
 	install 2>&1 | tee output.log | grep -E '(Running org|Tests run: )'
-
-fix_ownership "${WORKDIR}"
 
 exit $?

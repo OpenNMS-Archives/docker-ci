@@ -11,12 +11,13 @@ usage() {
 }
 
 install_packages() {
-	echo "* installing sudo and psql"
+	echo "* installing packages"
 	if [ -x /usr/bin/apt-get ]; then
 		apt-get update
-		apt-get -y install sudo postgresql-client
+		apt-get -y install sudo postgresql-client "r-recommended"
 	elif [ -x /usr/bin/yum ]; then
-		yum -y install sudo postgresql
+		yum -y install sudo postgresql epel-release
+		yum -y install R
 	else
 		echo "no apt-get nor yum, not sure what to do"
 		exit 1

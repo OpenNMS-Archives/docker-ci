@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -o pipefail
+
 usage() {
 	echo "usage: $0 <-b workdir | git_url git_branch git_commit [workdir]>"
 	echo ""

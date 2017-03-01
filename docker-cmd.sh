@@ -151,4 +151,13 @@ echo ./compile.pl \
 	-Pbuild-bamboo \
 	install 2>&1 | tee output.log | grep -E '(Running org|Tests run: )'
 
-exit $?
+RET="$?"
+
+if [ "$RET" -gt 0 ]; then
+	echo "BUILD FAILED."
+	echo "Here are the last 10k lines of the logs.  If you need more, get the 'output.log' artifact from Bamboo."
+	echo "-----"
+	tail -n 10000 output.log
+fi
+
+exit "$RET"

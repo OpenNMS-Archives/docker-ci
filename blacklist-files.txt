@@ -5,3 +5,7 @@ core/db/src/test/java/org/opennms/core/db/ConnectionFactoryIT.java
 core/db/src/test/java/org/opennms/core/db/HikariCPConnectionFactoryIT.java
 opennms-icmp/opennms-icmp-proxy-rpc-impl/src/test/java/org/opennms/netmgt/icmp/proxy/LocationAwarePingClientIT.java
 opennms-icmp/opennms-icmp-proxy-rpc-impl/src/test/java/org/opennms/netmgt/icmp/proxy/LocationAwarePingSweepClientIT.java
+opennms-services/src/test/java/org/opennms/netmgt/poller/monitors/SshMonitorIT.java
+opennms-services/src/test/java/org/opennms/netmgt/poller/monitors/SshMonitorTest.java
+opennms-services/src/test/java/org/opennms/netmgt/protocols/SshIT.java
+opennms-services/src/test/java/org/opennms/netmgt/protocols/SshTest.java

@@ -14,10 +14,10 @@ install_packages() {
 	echo "* installing packages"
 	if [ -x /usr/bin/apt-get ]; then
 		apt-get update
-		apt-get -y install sudo postgresql-client "r-recommended" "openssh-server"
+		apt-get -y install sudo postgresql-client "r-recommended" "openssh-server" "ruby"
 		systemctl restart ssh
 	elif [ -x /usr/bin/yum ]; then
-		yum -y install sudo postgresql "epel-release" "openssh-server"
+		yum -y install sudo postgresql "epel-release" "openssh-server" "ruby" "rubygems"
 		yum -y install R
 		systemctl restart sshd
 	else

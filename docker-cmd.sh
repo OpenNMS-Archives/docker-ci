@@ -24,6 +24,7 @@ install_packages() {
 		echo "no apt-get nor yum, not sure what to do"
 		exit 1
 	fi
+	gem install sass
 }
 
 

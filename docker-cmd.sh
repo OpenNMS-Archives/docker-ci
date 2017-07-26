@@ -117,11 +117,14 @@ find . -type f -name opennms-datasources.xml | grep /src/test/ | while read -r F
 done
 
 echo "* removing failing tests for now..."
-cat /blacklist-files.txt | while read -r FILE; do
+while read -r FILE; do
 	if [ -n "$FILE" ] && [ -r "$FILE" ]; then
+		echo "* blacklisted: $FILE"
 		rm -f "$FILE"
+	else
+		echo "* not found: $FILE"
 	fi
-done
+done < /blacklist-files.txt
 
 echo "* building in $WORKDIR:"
 

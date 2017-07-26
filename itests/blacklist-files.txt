@@ -3,6 +3,12 @@ core/db/src/test/java/org/opennms/core/db/ConnectionFactoryTest.java
 core/db/src/test/java/org/opennms/core/db/C3P0ConnectionFactoryIT.java
 core/db/src/test/java/org/opennms/core/db/ConnectionFactoryIT.java
 core/db/src/test/java/org/opennms/core/db/HikariCPConnectionFactoryIT.java
+core/test-api/db/src/test/java/org/opennms/core/test/db/TriggerSetIfServiceKeysOnInsertTest.java
+core/test-api/db/src/test/java/org/opennms/core/test/db/TriggerSetIfServiceKeysOnUpdateTest.java
+core/test-api/db/src/test/java/org/opennms/core/test/db/TriggerSetIpInterfaceKeysOnInsertTest.java
+core/test-api/db/src/test/java/org/opennms/core/test/db/TriggerSetIpInterfaceKeysOnUpdateTest.java
+core/test-api/db/src/test/java/org/opennms/core/test/db/TriggerSetSnmpInterfaceKeysOnInsertTest.java
+core/test-api/db/src/test/java/org/opennms/core/test/db/TriggerSetSnmpInterfaceKeysOnUpdateTest.java
 opennms-icmp/opennms-icmp-proxy-rpc-impl/src/test/java/org/opennms/netmgt/icmp/proxy/LocationAwarePingClientIT.java
 opennms-icmp/opennms-icmp-proxy-rpc-impl/src/test/java/org/opennms/netmgt/icmp/proxy/LocationAwarePingSweepClientIT.java
 opennms-services/src/test/java/org/opennms/netmgt/poller/monitors/SshMonitorIT.java

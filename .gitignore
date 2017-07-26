@@ -2,3 +2,5 @@
 init.d/
 !/init.d/
 *.built
+itests/*.sh
+stests/*.sh

@@ -18,7 +18,12 @@ RUN yum -y install  \
 	maven \
 	mingw32-nsis \
 	openssh-clients \
+	openssh-server \
+	postgresql \
+	R \
 	rsync \
+	ruby \
+	rubygems \
 	unzip \
 	wget \
 	which \

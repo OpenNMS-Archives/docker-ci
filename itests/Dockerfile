@@ -18,15 +18,19 @@ RUN yum -y install  \
 	maven \
 	mingw32-nsis \
 	openssh-clients \
-	openssh-server \
 	postgresql \
-	R \
 	rsync \
-	ruby \
-	rubygems \
 	unzip \
 	wget \
 	which \
+	&& yum -y clean all
+
+RUN yum -y install \
+	openssh-server \
+	postgresql \
+	R \
+	ruby \
+	rubygems \
 	&& yum -y clean all
 
 COPY *.sh blacklist-files.txt /

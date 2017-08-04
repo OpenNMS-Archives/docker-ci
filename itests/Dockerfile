@@ -1,32 +1,19 @@
-FROM centos:7
+FROM opennmsbamboo/base-centos
 MAINTAINER ranger@opennms.org
 
 LABEL id=org.opennms.bamboo.integration
 
-# Import the OpenNMS GPG key
-RUN rpm --import https://yum.opennms.org/OPENNMS-GPG-KEY
-
-# Make sure we have the EPEL repository available
-RUN yum install -y epel-release deltarpm http://yum.opennms.org/repofiles/opennms-repo-develop-rhel7.noarch.rpm
-
-RUN yum -y install  \
-	ed \ 
-	expect \
+# Build tools
+RUN yum -y --enablerepo=epel install  \
+	gcc-c++ \
 	git \
-	java-1.7.0-openjdk-devel \
-	java-1.8.0-openjdk-devel \
-	maven \
-	mingw32-nsis \
-	openssh-clients \
-	postgresql \
-	rsync \
-	unzip \
-	wget \
-	which \
+	make \
+	rpm-build \
 	&& yum -y clean all
 
+# OpenNMS build dependencies
 RUN yum -y install \
-	openssh-server \
+	mingw32-nsis \
 	postgresql \
 	R \
 	ruby \

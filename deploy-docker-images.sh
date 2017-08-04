@@ -5,9 +5,9 @@
 for IMAGE in \
 	base-centos \
 	base-debian \
-	itests \
 	node-centos \
 	node-debian \
+	itests \
 ; do
 	echo "* Deploying opennmsbamboo/${IMAGE} to Docker Hub"
 	docker push "opennmsbamboo/${IMAGE}"

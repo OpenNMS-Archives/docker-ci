@@ -67,7 +67,11 @@ fi
 mkdir -p "${WORKDIR}"
 cd "$WORKDIR" || exit 1
 
+mkdir -p ~/.m2
+mv /settings.xml ~/.m2/
+
 if [ -f .git/HEAD ]; then
+	# shellcheck disable=SC2012
 	HOST_UID="$(ls -lan .git/HEAD | awk '{print $3 }')"
 fi
 
@@ -118,14 +122,14 @@ done
 
 if [ -e /blacklist-files.txt ]; then
 	echo "* removing blacklisted files:"
-	cat /blacklist-files.txt | while read -r FILE; do
+	(while read -r FILE; do
 		if [ -n "$FILE" ] && [ -r "$FILE" ]; then
 			echo "  * blacklisted: $FILE"
 			rm -f "$FILE"
 		else
 			echo "  * not found: $FILE"
 		fi
-	done
+	done) < /blacklist-files.txt
 else
 	echo "* blacklist not found"
 fi

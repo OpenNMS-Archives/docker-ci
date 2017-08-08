@@ -8,6 +8,6 @@ for IMAGE in \
 	itests \
 ; do
 	echo "* Building opennmsbamboo/${IMAGE}"
-	rsync -ar ./*.sh "${IMAGE}/"
+	rsync -ar ./*.sh ./settings.xml "${IMAGE}/"
 	docker build -t "opennmsbamboo/${IMAGE}" "${IMAGE}"
 done

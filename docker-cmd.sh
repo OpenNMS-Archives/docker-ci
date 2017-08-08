@@ -67,8 +67,13 @@ fi
 mkdir -p "${WORKDIR}"
 cd "$WORKDIR" || exit 1
 
-mkdir -p ~/.m2
-mv /settings.xml ~/.m2/
+if [ -e /settings.xml ]; then
+	echo "* creating ~/.m2/settings.xml"
+	mkdir -p ~/.m2
+	mv /settings.xml ~/.m2/
+else
+	echo "* WARNING: no settings.xml found"
+fi
 
 if [ -f .git/HEAD ]; then
 	# shellcheck disable=SC2012

@@ -20,7 +20,7 @@ RUN yum -y install \
 	rubygems \
 	&& yum -y clean all
 
-COPY *.sh blacklist-files.txt /
+COPY *.sh settings.xml blacklist-files.txt /
 
 #ARG GIT_URL=https://github.com/OpenNMS/opennms.git
 #ARG GIT_HASH

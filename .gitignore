@@ -3,4 +3,4 @@ init.d/
 !/init.d/
 *.built
 /*/*.sh
-/*/*.sh
+/*/settings.xml

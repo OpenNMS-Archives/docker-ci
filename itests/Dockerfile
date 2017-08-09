@@ -17,16 +17,16 @@ RUN yum -y install \
 	postgresql \
 	R \
 	ruby \
+	ruby-devel \
 	rubygems \
 	&& yum -y clean all
 
 RUN gem install sass
 
+ENV JAVA_HOME /usr/lib/jvm/java-1.7.0-openjdk
+
 COPY *.sh settings.xml blacklist-files.txt /
 
 #ARG GIT_URL=https://github.com/OpenNMS/opennms.git
 #ARG GIT_HASH
-
-ENV JAVA_HOME /usr/lib/jvm/java-1.7.0-openjdk
-
 ENTRYPOINT ["/docker-cmd.sh"]

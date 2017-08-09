@@ -170,6 +170,7 @@ echo ./compile.pl \
 	-Dmock.db.adminUser="postgres" \
 	-Dmock.db.adminPassword="${PGPASSWORD}" \
 	-DrunPingTests=false \
+	-DskipIpv6Tests=true \
 	-Dbuild.skip.tarball=true \
 	-t \
 	-v \
@@ -183,6 +184,7 @@ echo ./compile.pl \
 	-Dmock.db.adminUser="postgres" \
 	-Dmock.db.adminPassword="${PGPASSWORD}" \
 	-DrunPingTests=false \
+	-DskipIpv6Tests=true \
 	-Dbuild.skip.tarball=true \
 	-t \
 	-v \

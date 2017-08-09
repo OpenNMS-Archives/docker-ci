@@ -103,14 +103,30 @@ fi
 echo "* docker environment:"
 env
 
-/wait-for-postgres.sh
+export PGPASSWORD="${OPENNMS_POSTGRES_ENV_POSTGRES_PASSWORD}"
+if [ -z "${PGPASSWORD}" ]; then
+	PGPASSWORD="${POSTGRES_ENV_POSTGRES_PASSWORD}"
+fi
+
+export PGHOST="${OPENNMS_POSTGRES_PORT_5432_TCP_ADDR}"
+if [ -z "${PGHOST}" ]; then
+	PGHOST="${POSTGRES_PORT_5432_TCP_ADDR}"
+fi
+
+export PGPORT="${OPENNMS_POSTGRES_PORT_5432_TCP_PORT}"
+if [ -z "${PGPORT}" ]; then
+	PGPORT="${POSTGRES_PORT_5432_TCP_PORT}"
+fi
+
+/wait-for-postgres.sh || exit 1
 
 echo "* setting up opennms user"
-PGPASSWORD="${OPENNMS_POSTGRES_ENV_POSTGRES_PASSWORD}" psql \
-	-h "${OPENNMS_POSTGRES_PORT_5432_TCP_ADDR}" \
-	-p "${OPENNMS_POSTGRES_PORT_5432_TCP_PORT}" \
+psql \
+	-h "${PGHOST}" \
+	-p "${PGPORT}" \
 	-U postgres \
-	-c "CREATE USER opennms CREATEDB SUPERUSER LOGIN PASSWORD 'opennms';"
+	-c "CREATE USER opennms CREATEDB SUPERUSER LOGIN PASSWORD 'opennms';" \
+	|| exit 1
 
 if [ "$BUILD_IN_PLACE" -eq 0 ]; then
 	echo "* cloning $GIT_URL:"
@@ -118,10 +134,12 @@ if [ "$BUILD_IN_PLACE" -eq 0 ]; then
 	git reset --hard "$GIT_COMMIT" || exit 1
 fi
 git clean -fdx || exit 1
+git branch
+git log | head -n 10
 
 echo "* fixing test opennms-datasources.xml files"
 find . -type f -name opennms-datasources.xml | grep /src/test/ | while read -r FILE; do
-	sed -e "s,localhost:5432,${OPENNMS_POSTGRES_PORT_5432_TCP_ADDR}:${OPENNMS_POSTGRES_PORT_5432_TCP_PORT},g" "${FILE}" > "${FILE}.replaced"
+	sed -e "s,localhost:5432,${PGHOST}:${PGPORT},g" "${FILE}" > "${FILE}.replaced"
 	mv "${FILE}.replaced" "${FILE}"
 done
 
@@ -148,9 +166,9 @@ echo "* building in $WORKDIR:"
 echo ./compile.pl \
 	-Dorg.opennms.core.test-api.snmp.useMockSnmpStrategy=false \
 	-DupdatePolicy=never \
-	-Dmock.db.url="jdbc:postgresql://${OPENNMS_POSTGRES_PORT_5432_TCP_ADDR}:${OPENNMS_POSTGRES_PORT_5432_TCP_PORT}/" \
+	-Dmock.db.url="jdbc:postgresql://${PGHOST}:${PGPORT}/" \
 	-Dmock.db.adminUser="postgres" \
-	-Dmock.db.adminPassword="${OPENNMS_POSTGRES_ENV_POSTGRES_PASSWORD}" \
+	-Dmock.db.adminPassword="${PGPASSWORD}" \
 	-DrunPingTests=false \
 	-Dbuild.skip.tarball=true \
 	-t \
@@ -161,9 +179,9 @@ echo ./compile.pl \
 ./compile.pl \
 	-Dorg.opennms.core.test-api.snmp.useMockSnmpStrategy=false \
 	-DupdatePolicy=never \
-	-Dmock.db.url="jdbc:postgresql://${OPENNMS_POSTGRES_PORT_5432_TCP_ADDR}:${OPENNMS_POSTGRES_PORT_5432_TCP_PORT}/" \
+	-Dmock.db.url="jdbc:postgresql://${PGHOST}:${PGPORT}/" \
 	-Dmock.db.adminUser="postgres" \
-	-Dmock.db.adminPassword="${OPENNMS_POSTGRES_ENV_POSTGRES_PASSWORD}" \
+	-Dmock.db.adminPassword="${PGPASSWORD}" \
 	-DrunPingTests=false \
 	-Dbuild.skip.tarball=true \
 	-t \

@@ -20,6 +20,8 @@ RUN yum -y install \
 	rubygems \
 	&& yum -y clean all
 
+RUN gem install sass
+
 COPY *.sh settings.xml blacklist-files.txt /
 
 #ARG GIT_URL=https://github.com/OpenNMS/opennms.git

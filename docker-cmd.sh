@@ -13,18 +13,18 @@ usage() {
 install_packages() {
 	echo "* installing packages"
 	if [ -x /usr/bin/apt-get ]; then
-		apt-get update
-		apt-get -y install sudo postgresql-client "r-recommended" "openssh-server" "ruby"
+		#apt-get update
+		#apt-get -y install sudo postgresql-client "r-recommended" "openssh-server" "ruby"
 		systemctl restart ssh
 	elif [ -x /usr/bin/yum ]; then
-		yum -y install sudo postgresql "epel-release" "openssh-server" "ruby" "rubygems"
-		yum -y install R
+		#yum -y install sudo postgresql "epel-release" "openssh-server" "ruby" "rubygems"
+		#yum -y install R
 		systemctl restart sshd
 	else
 		echo "no apt-get nor yum, not sure what to do"
 		exit 1
 	fi
-	gem install sass
+	#gem install sass
 }
 
 

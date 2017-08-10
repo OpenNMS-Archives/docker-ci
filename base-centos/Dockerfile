@@ -11,6 +11,7 @@ RUN yum install -y epel-release deltarpm http://yum.opennms.org/repofiles/opennm
 
 # System tools
 RUN yum -y install  \
+	curl \
 	ed \
 	expect \
 	git \

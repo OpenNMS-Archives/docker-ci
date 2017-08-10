@@ -2,7 +2,7 @@
 
 ./build-docker-images.sh
 
-for container in opennms-integration-tests opennms-postgres; do
+for container in opennms-integration-tests opennms-postgres opennms-nexus; do
 	docker stop $container || :
 	docker rm $container || :
 done
@@ -10,7 +10,10 @@ done
 echo docker run --name opennms-postgres -e POSTGRES_PASSWORD=stests -d postgres
 docker run --name opennms-postgres -e POSTGRES_PASSWORD=stests -d postgres
 
-ARGS=("--link" "opennms-postgres:postgres")
+echo docker run --name opennms-nexus -d opennmsbamboo/nexus
+docker run -p 8081:8081 --name opennms-nexus -d opennmsbamboo/nexus
+
+ARGS=("--link" "opennms-postgres:postgres" "--link" "opennms-nexus:opennms-nexus")
 if [ "$(uname -s)" = "Linux" ]; then
 	ARGS+=(--sysctl 'net.ipv4.ping_group_range=0 429496729' \
 	--sysctl 'net.core.netdev_max_backlog=5000' \

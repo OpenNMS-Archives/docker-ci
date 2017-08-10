@@ -5,6 +5,7 @@ for IMAGE in \
 	base-debian \
 	node-centos \
 	node-debian \
+	nexus \
 	itests \
 ; do
 	echo "* Building opennmsbamboo/${IMAGE}"

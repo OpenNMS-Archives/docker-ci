@@ -7,6 +7,7 @@ for IMAGE in \
 	base-debian \
 	node-centos \
 	node-debian \
+	nexus \
 	itests \
 ; do
 	echo "* Deploying opennmsbamboo/${IMAGE} to Docker Hub"

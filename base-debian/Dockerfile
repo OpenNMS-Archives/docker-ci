@@ -8,6 +8,7 @@ RUN apt-get update && \
 	apt-get -y install \
 	apt-transport-https \
 	curl \
+	wget \
 	&& apt-get clean
 
 # Enable the OpenNMS repo

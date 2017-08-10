@@ -67,10 +67,13 @@ fi
 mkdir -p "${WORKDIR}"
 cd "$WORKDIR" || exit 1
 
+NEXUS_HOST="${OPENNMS_NEXUS_PORT_8081_TCP_ADDR}"
+NEXUS_PORT="${OPENNMS_NEXUS_PORT_8081_TCP_PORT}"
+
 if [ -e /settings.xml ]; then
 	echo "* creating ~/.m2/settings.xml"
 	mkdir -p ~/.m2
-	mv /settings.xml ~/.m2/
+	sed -e "s,localhost:8081,${NEXUS_HOST}:${NEXUS_PORT},g" /settings.xml > ~/.m2/settings.xml
 else
 	echo "* WARNING: no settings.xml found"
 fi
@@ -119,6 +122,7 @@ if [ -z "${PGPORT}" ]; then
 fi
 
 /wait-for-postgres.sh || exit 1
+/wait-for-nexus.sh || exit 1
 
 echo "* setting up opennms user"
 psql \

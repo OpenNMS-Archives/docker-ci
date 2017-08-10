@@ -86,7 +86,8 @@ fi
 if [ -n "$HOST_UID" ] && [ "$(id -u)" -ne "$HOST_UID" ]; then
 	install_packages
 	SUDO="$(which sudo)"
-	exec "$SUDO" -u "#${HOST_UID}" -E "$0" "${ARGS[@]}"
+	"$SUDO" -u "#${HOST_UID}" -E "$0" "${ARGS[@]}" || exit $?
+	exit 0
 elif [ -z "$HOST_UID" ]; then
 	if [ "$BUILD_IN_PLACE" -eq 1 ]; then
 		echo "ERROR: setting \$HOST_UID is required in build-in-place mode."

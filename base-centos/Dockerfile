@@ -19,6 +19,7 @@ RUN yum -y install  \
 	openssh-server \
 	postgresql \
 	rsync \
+	sudo \
 	unzip \
 	wget \
 	which \

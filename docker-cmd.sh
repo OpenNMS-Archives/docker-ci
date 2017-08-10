@@ -71,9 +71,9 @@ NEXUS_HOST="${OPENNMS_NEXUS_PORT_8081_TCP_ADDR}"
 NEXUS_PORT="${OPENNMS_NEXUS_PORT_8081_TCP_PORT}"
 
 if [ -e /settings.xml ]; then
-	echo "* creating ~/.m2/settings.xml"
-	mkdir -p ~/.m2
-	sed -e "s,localhost:8081,${NEXUS_HOST}:${NEXUS_PORT},g" /settings.xml > ~/.m2/settings.xml
+	echo "* creating ${HOME}/.m2/settings.xml"
+	mkdir -p "${HOME}/.m2"
+	sed -e "s,localhost:8081,${NEXUS_HOST}:${NEXUS_PORT},g" /settings.xml > "${HOME}/.m2/settings.xml"
 else
 	echo "* WARNING: no settings.xml found"
 fi

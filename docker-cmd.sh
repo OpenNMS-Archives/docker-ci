@@ -3,7 +3,7 @@
 set -o pipefail
 
 usage() {
-	echo "usage: $0 <-b workdir | git_url git_branch git_commit [workdir]>"
+	echo "usage: $0 <-b workdir | git_url git_branch [git_commit] [workdir]>"
 	echo ""
 	echo "	-b   Enable build-in-place mode.  This assumes that the git repository is checked out to the specified working directory."
 	echo ""
@@ -55,10 +55,14 @@ else
 	GIT_URL="$1"
 	GIT_BRANCH="$2"
 	GIT_COMMIT="$3"
-	ARGS+=("$GIT_URL" "$GIT_BRANCH" "$GIT_COMMIT")
-	if [ -z "${GIT_COMMIT}" ]; then
+	if [ -z "${GIT_BRANCH}" ]; then
 		usage
 	fi
+	if [ -z "${GIT_COMMIT}" ] ;then
+		GIT_COMMIT="${GIT_BRANCH}"
+	fi
+
+	ARGS+=("$GIT_URL" "$GIT_BRANCH" "$GIT_COMMIT")
 	if [ -n "$4" ]; then
 		WORKDIR="$4"
 	fi

@@ -73,24 +73,29 @@ cd "$WORKDIR" || exit 1
 
 NEXUS_HOST="${OPENNMS_NEXUS_PORT_8081_TCP_ADDR}"
 NEXUS_PORT="${OPENNMS_NEXUS_PORT_8081_TCP_PORT}"
+SETTINGS_XML="/tmp/settings.xml"
 
 if [ -e /settings.xml ]; then
-	echo "* creating ${HOME}/.m2/settings.xml"
-	mkdir -p "${HOME}/.m2"
-	sed -e "s,localhost:8081,${NEXUS_HOST}:${NEXUS_PORT},g" /settings.xml > "${HOME}/.m2/settings.xml"
+	echo "* creating ${SETTINGS_XML}"
+	mkdir -p "${WORKDIR}"
+	sed -e "s,localhost:8081,${NEXUS_HOST}:${NEXUS_PORT},g" /settings.xml > "${SETTINGS_XML}"
 else
-	echo "* WARNING: no settings.xml found"
+	echo "* ERROR: no settings.xml found, this image has gone squirrely"
+	exit 1
 fi
 
 if [ -f .git/HEAD ]; then
 	# shellcheck disable=SC2012
-	HOST_UID="$(ls -lan .git/HEAD | awk '{print $3 }')"
+	HOST_UID="$(ls -lan .git/HEAD | awk '{ print $3 }')"
 fi
+
+echo "HOST_UID=${HOST_UID}"
+echo "UID=$(id -u)"
 
 if [ -n "$HOST_UID" ] && [ "$(id -u)" -ne "$HOST_UID" ]; then
 	install_packages
 	SUDO="$(which sudo)"
-	"$SUDO" -u "#${HOST_UID}" -E "$0" "${ARGS[@]}" || exit $?
+	"$SUDO" -u "#${HOST_UID}" -E /usr/bin/env HOST_UID="${HOST_UID}" HOME="${HOME}" WORKDIR="${WORKDIR}" "$0" "${ARGS[@]}" || exit $?
 	exit 0
 elif [ -z "$HOST_UID" ]; then
 	if [ "$BUILD_IN_PLACE" -eq 1 ]; then
@@ -146,9 +151,9 @@ git clean -fdx || exit 1
 git branch
 git log | head -n 10
 
-echo "* fixing test opennms-datasources.xml files"
-find . -type f -name opennms-datasources.xml | grep /src/test/ | while read -r FILE; do
-	sed -e "s,localhost:5432,${PGHOST}:${PGPORT},g" "${FILE}" > "${FILE}.replaced"
+echo "* fixing opennms-datasources.xml files for testing"
+find . -type f -name opennms-datasources.xml | while read -r FILE; do
+	sed -e "s,localhost:5432,${PGHOST}:${PGPORT},g" -e "s,\${install.database.admin.user},postgres,g" -e "s,\${install.database.admin.password},${PGPASSWORD},g" "${FILE}" > "${FILE}.replaced"
 	mv "${FILE}.replaced" "${FILE}"
 done
 
@@ -168,6 +173,9 @@ fi
 
 echo "* building in $WORKDIR:"
 
+echo ./compile.pl -s "${SETTINGS_XML}" -N help:effective-settings
+./compile.pl -s "${SETTINGS_XML}" -N help:effective-settings
+
 # heartbeat  :)
 (while true; do sleep 5; date; done) &
 
@@ -184,6 +192,7 @@ echo ./compile.pl \
 	-t \
 	-v \
 	-Pbuild-bamboo \
+	-s "${SETTINGS_XML}" \
 	install
 
 ./compile.pl \
@@ -198,6 +207,7 @@ echo ./compile.pl \
 	-t \
 	-v \
 	-Pbuild-bamboo \
+	-s "${SETTINGS_XML}" \
 	install 2>&1 | tee output.log | grep -E '(Running org|Tests run: )'
 
 RET="$?"

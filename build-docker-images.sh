@@ -1,5 +1,11 @@
 #!/bin/sh -e
 
+ORIGDIR="$(pwd)"
+MYDIR=$(dirname "$0")
+MYDIR=$(cd "$MYDIR" || exit 1; pwd)
+
+cd "${MYDIR}"
+
 for IMAGE in \
 	base-centos \
 	base-debian \
@@ -12,3 +18,5 @@ for IMAGE in \
 	rsync -ar ./*.sh ./settings.xml "${IMAGE}/"
 	docker build -t "opennmsbamboo/${IMAGE}" "${IMAGE}"
 done
+
+cd "${ORIGDIR}"

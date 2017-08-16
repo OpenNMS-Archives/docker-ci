@@ -7,7 +7,8 @@ LABEL id=org.opennms.bamboo.base.centos
 RUN rpm --import https://yum.opennms.org/OPENNMS-GPG-KEY
 
 # Make sure we have the EPEL repository available
-RUN yum install -y epel-release deltarpm http://yum.opennms.org/repofiles/opennms-repo-develop-rhel7.noarch.rpm
+RUN yum install -y epel-release deltarpm http://yum.opennms.org/repofiles/opennms-repo-develop-rhel7.noarch.rpm \
+	&& yum -y --enablerepo='*' clean packages
 
 # System tools
 RUN yum -y install  \
@@ -23,11 +24,11 @@ RUN yum -y install  \
 	unzip \
 	wget \
 	which \
-	&& yum -y clean all
+	&& yum -y --enablerepo='*' clean packages
 
 # Java dependencies
 RUN yum -y install \
 	java-1.7.0-openjdk-devel \
 	java-1.8.0-openjdk-devel \
 	maven \
-	&& yum -y clean all
+	&& yum -y --enablerepo='*' clean packages

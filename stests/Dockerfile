@@ -9,7 +9,7 @@ RUN yum -y --enablerepo=epel install  \
 	git \
 	make \
 	rpm-build \
-	&& yum -y clean all
+	&& yum -y --enablerepo='*' clean packages
 
 # OpenNMS build dependencies
 RUN yum -y install \
@@ -18,7 +18,7 @@ RUN yum -y install \
 	R \
 	ruby \
 	rubygems \
-	&& yum -y clean all
+	&& yum -y --enablerepo='*' clean packages
 
 COPY *.sh settings.xml /
 

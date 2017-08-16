@@ -187,7 +187,6 @@ COMPILE_CMD=(./compile.pl \
 	"-Dmock.db.adminPassword=${PGPASSWORD}" \
 	"-DrunPingTests=false" \
 	"-DskipIpv6Tests=true" \
-	"-Dbuild.skip.tarball=true" \
 	-v \
 	-Pbuild-bamboo \
 	-s "${SETTINGS_XML}")

@@ -173,42 +173,28 @@ fi
 
 echo "* building in $WORKDIR:"
 
-echo ./compile.pl -s "${SETTINGS_XML}" -N help:effective-settings
-./compile.pl -s "${SETTINGS_XML}" -N help:effective-settings
+echo ./compile.pl -s "${SETTINGS_XML}" -Dbuild.skip.tarball=true -N help:effective-settings
+./compile.pl -s "${SETTINGS_XML}" -Dbuild.skip.tarball=true -N help:effective-settings
 
 # heartbeat  :)
 (while true; do sleep 5; date; done) &
 
-# run compile
-echo ./compile.pl \
-	-Dorg.opennms.core.test-api.snmp.useMockSnmpStrategy=false \
-	-DupdatePolicy=never \
-	-Dmock.db.url="jdbc:postgresql://${PGHOST}:${PGPORT}/" \
-	-Dmock.db.adminUser="postgres" \
-	-Dmock.db.adminPassword="${PGPASSWORD}" \
-	-DrunPingTests=false \
-	-DskipIpv6Tests=true \
-	-Dbuild.skip.tarball=true \
-	-t \
+COMPILE_CMD=(./compile.pl \
+	"-Dorg.opennms.core.test-api.snmp.useMockSnmpStrategy=false" \
+	"-DupdatePolicy=never" \
+	"-Dmock.db.url=jdbc:postgresql://${PGHOST}:${PGPORT}/" \
+	"-Dmock.db.adminUser=postgres" \
+	"-Dmock.db.adminPassword=${PGPASSWORD}" \
+	"-DrunPingTests=false" \
+	"-DskipIpv6Tests=true" \
+	"-Dbuild.skip.tarball=true" \
 	-v \
 	-Pbuild-bamboo \
-	-s "${SETTINGS_XML}" \
-	install
+	-s "${SETTINGS_XML}")
 
-./compile.pl \
-	-Dorg.opennms.core.test-api.snmp.useMockSnmpStrategy=false \
-	-DupdatePolicy=never \
-	-Dmock.db.url="jdbc:postgresql://${PGHOST}:${PGPORT}/" \
-	-Dmock.db.adminUser="postgres" \
-	-Dmock.db.adminPassword="${PGPASSWORD}" \
-	-DrunPingTests=false \
-	-DskipIpv6Tests=true \
-	-Dbuild.skip.tarball=true \
-	-t \
-	-v \
-	-Pbuild-bamboo \
-	-s "${SETTINGS_XML}" \
-	install 2>&1 | tee output.log | grep -E '(Running org|Tests run: )'
+# run tests
+echo "${COMPILE_CMD[@]}" -t install
+"${COMPILE_CMD[@]}" -t install 2>&1 | tee output.log | grep -E '(Running org|Tests run: )'
 
 RET="$?"
 

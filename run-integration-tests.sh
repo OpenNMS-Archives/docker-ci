@@ -19,8 +19,9 @@ fi
 echo docker run --name opennms-postgres -e POSTGRES_PASSWORD=stests -d postgres
 docker run --name opennms-postgres -e POSTGRES_PASSWORD=stests -d postgres
 
-echo docker run --name opennms-nexus -d opennmsbamboo/nexus
-docker run -p 8081:8081 --name opennms-nexus -d opennmsbamboo/nexus
+mkdir -p /tmp/nexus-blobs
+echo docker run --name opennms-nexus -d -v /tmp/nexus-blobs:/nexus-data/blobs opennmsbamboo/nexus
+docker run -p 8081:8081 --name opennms-nexus -d -v /tmp/nexus-blobs:/nexus-data/blobs opennmsbamboo/nexus
 
 # link the PostgreSQL container
 ARGS=("--link" "opennms-postgres:postgres")

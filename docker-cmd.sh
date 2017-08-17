@@ -135,12 +135,15 @@ fi
 /wait-for-nexus.sh || exit 1
 
 echo "* setting up opennms user"
-psql \
-	-h "${PGHOST}" \
-	-p "${PGPORT}" \
-	-U postgres \
-	-c "CREATE USER opennms CREATEDB SUPERUSER LOGIN PASSWORD 'opennms';" \
-	|| exit 1
+USER_COUNT="$(psql -h "${PGHOST}" -p "${PGPORT}" -U postgres -tAc "SELECT count(rolname) FROM pg_roles WHERE rolname='opennms'")"
+if [ "${USER_COUNT}" -eq 0 ]; then
+	psql \
+		-h "${PGHOST}" \
+		-p "${PGPORT}" \
+		-U postgres \
+		-c "CREATE USER opennms CREATEDB SUPERUSER LOGIN PASSWORD 'opennms';" \
+		|| exit 1
+fi
 
 if [ "$BUILD_IN_PLACE" -eq 0 ]; then
 	echo "* cloning $GIT_URL:"

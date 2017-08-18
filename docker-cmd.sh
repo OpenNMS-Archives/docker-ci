@@ -190,6 +190,7 @@ COMPILE_CMD=(./compile.pl \
 	"-Dmock.db.adminPassword=${PGPASSWORD}" \
 	"-DrunPingTests=false" \
 	"-DskipIpv6Tests=true" \
+	"-DskipConnectionTests=true" \
 	-v \
 	-Pbuild-bamboo \
 	-s "${SETTINGS_XML}")

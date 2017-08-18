@@ -35,12 +35,7 @@ ARGS+=("--link" "opennms-nexus:opennms-nexus")
 
 # set sysctl options if Linux is the host
 if [ "$(uname -s)" = "Linux" ]; then
-	ARGS+=(--sysctl 'net.ipv4.ping_group_range=0 429496729' \
-	--sysctl 'net.core.netdev_max_backlog=5000' \
-	--sysctl 'net.core.rmem_default=8388608' \
-	--sysctl 'net.core.rmem_max=16777216' \
-	--sysctl 'net.core.wmem_default=8388608' \
-	--sysctl 'net.core.wmem_max=16777216')
+	ARGS+=(--sysctl 'net.ipv4.ping_group_range=0 429496729')
 fi
 
 # mount the passed to /src and set it to the container working directory

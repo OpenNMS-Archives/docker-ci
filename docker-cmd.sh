@@ -205,6 +205,8 @@ if [ "$RET" -gt 0 ]; then
 	echo "Here are the last 10k lines of the logs.  If you need more, get the 'output.log' artifact from Bamboo."
 	echo "-----"
 	tail -n 10000 output.log
+	exit "$RET"
 fi
 
-exit "$RET"
+echo "BUILD PASSED"
+exit 0

@@ -20,6 +20,7 @@ echo docker run --name opennms-postgres -e POSTGRES_PASSWORD=stests -d postgres
 docker run --name opennms-postgres -e POSTGRES_PASSWORD=stests -d postgres
 
 mkdir -p /tmp/nexus-blobs
+chmod 777 /tmp/nexus-blobs
 echo docker run --name opennms-nexus -d -v /tmp/nexus-blobs:/nexus-data/blobs opennmsbamboo/nexus
 docker run -p 8081:8081 --name opennms-nexus -d -v /tmp/nexus-blobs:/nexus-data/blobs opennmsbamboo/nexus
 

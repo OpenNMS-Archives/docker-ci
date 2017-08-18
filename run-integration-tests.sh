@@ -5,7 +5,7 @@ MYDIR=$(cd "$MYDIR" || exit 1; pwd)
 
 "${MYDIR}/build-docker-images.sh"
 
-for container in opennms-integration-tests opennms-postgres opennms-nexus; do
+for container in opennms-integration-tests opennms-postgres; do
 	docker stop $container || :
 	docker rm $container || :
 done
@@ -19,10 +19,12 @@ fi
 echo docker run --name opennms-postgres -e POSTGRES_PASSWORD=stests -d postgres
 docker run --name opennms-postgres -e POSTGRES_PASSWORD=stests -d postgres
 
-mkdir -p /tmp/nexus-blobs
-chmod 777 /tmp/nexus-blobs
-echo docker run --name opennms-nexus -d -v /tmp/nexus-blobs:/nexus-data/blobs opennmsbamboo/nexus
-docker run -p 8081:8081 --name opennms-nexus -d -v /tmp/nexus-blobs:/nexus-data/blobs opennmsbamboo/nexus
+if [ `docker ps -q --filter 'name=opennms-nexus' | wc -l` -eq 0 ]; then
+	mkdir -p /tmp/nexus-blobs
+	chmod 777 /tmp/nexus-blobs
+	echo docker run --name opennms-nexus -d -v /tmp/nexus-blobs:/nexus-data/blobs opennmsbamboo/nexus
+	docker run -p 8081:8081 --name opennms-nexus -d -v /tmp/nexus-blobs:/nexus-data/blobs opennmsbamboo/nexus
+fi
 
 # link the PostgreSQL container
 ARGS=("--link" "opennms-postgres:postgres")

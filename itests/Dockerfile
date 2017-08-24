@@ -16,6 +16,7 @@ RUN yum -y install \
 	mingw32-nsis \
 	postgresql \
 	R \
+	rrdtool \
 	ruby \
 	ruby-devel \
 	rubygems \

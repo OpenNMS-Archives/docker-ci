@@ -71,19 +71,6 @@ fi
 mkdir -p "${WORKDIR}"
 cd "$WORKDIR" || exit 1
 
-NEXUS_HOST="${OPENNMS_NEXUS_PORT_8081_TCP_ADDR}"
-NEXUS_PORT="${OPENNMS_NEXUS_PORT_8081_TCP_PORT}"
-SETTINGS_XML="/tmp/settings.xml"
-
-if [ -e /settings.xml ]; then
-	echo "* creating ${SETTINGS_XML}"
-	mkdir -p "${WORKDIR}"
-	sed -e "s,localhost:8081,${NEXUS_HOST}:${NEXUS_PORT},g" /settings.xml > "${SETTINGS_XML}"
-else
-	echo "* ERROR: no settings.xml found, this image has gone squirrely"
-	exit 1
-fi
-
 if [ -f .git/HEAD ]; then
 	# shellcheck disable=SC2012
 	HOST_UID="$(ls -lan .git/HEAD | awk '{ print $3 }')"
@@ -105,6 +92,19 @@ elif [ -z "$HOST_UID" ]; then
 		echo "WARNING: \$HOST_UID is not set!"
 	fi
 	install_packages
+fi
+
+NEXUS_HOST="${OPENNMS_NEXUS_PORT_8081_TCP_ADDR}"
+NEXUS_PORT="${OPENNMS_NEXUS_PORT_8081_TCP_PORT}"
+SETTINGS_XML="/tmp/settings.xml"
+
+if [ -e /settings.xml ]; then
+	echo "* creating ${SETTINGS_XML}"
+	mkdir -p "${WORKDIR}"
+	sed -e "s,localhost:8081,${NEXUS_HOST}:${NEXUS_PORT},g" /settings.xml > "${SETTINGS_XML}"
+else
+	echo "* ERROR: no settings.xml found, this image has gone squirrely"
+	exit 1
 fi
 
 if [ "$BUILD_IN_PLACE" -eq 1 ]; then

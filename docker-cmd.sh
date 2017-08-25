@@ -155,7 +155,7 @@ git branch
 git log | head -n 10
 
 echo "* fixing opennms-datasources.xml files for testing"
-find . -type f -name opennms-datasources.xml | while read -r FILE; do
+find . -type f -name opennms-datasources.xml\* | while read -r FILE; do
 	sed -e "s,localhost:5432,${PGHOST}:${PGPORT},g" -e "s,\${install.database.admin.user},postgres,g" -e "s,\${install.database.admin.password},${PGPASSWORD},g" "${FILE}" > "${FILE}.replaced"
 	mv "${FILE}.replaced" "${FILE}"
 done

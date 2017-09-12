@@ -7,6 +7,7 @@ for IMAGE in \
 	base-debian \
 	node-centos \
 	node-debian \
+	build-centos \
 	nexus \
 	itests \
 ; do

@@ -29,6 +29,6 @@ RUN yum -y install  \
 # Java dependencies
 RUN yum -y install \
 	java-1.7.0-openjdk-devel \
-	java-1.8.0-openjdk-devel \
 	maven \
+	http://mirror.internal.opennms.com/yum/develop/common/jdk/x64/jdk-8u144-linux-x64.rpm \
 	&& yum -y --enablerepo='*' clean packages

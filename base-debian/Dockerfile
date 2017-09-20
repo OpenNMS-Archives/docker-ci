@@ -8,12 +8,14 @@ RUN apt-get update && \
 	apt-get -y install \
 	apt-transport-https \
 	curl \
+	software-properties-common \
 	wget \
 	&& apt-get clean
 
-# Enable the OpenNMS repo
+# Enable the OpenNMS and Java 8 repos
 RUN echo "deb https://debian.opennms.org stable main" > /etc/apt/sources.list.d/opennms.list
 RUN curl -L -o - https://debian.opennms.org/OPENNMS-GPG-KEY | apt-key add -
+RUN echo "" | add-apt-repository "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main"
 
 # System tools
 RUN apt-get update && \
@@ -34,6 +36,11 @@ RUN apt-get update && \
 	git \
 	make \
 	&& apt-get clean
+
+# Java
+RUN echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
+RUN echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections
+RUN apt-get update && apt-get -y install oracle-java8-installer && apt-get clean
 
 # Node.JS
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -

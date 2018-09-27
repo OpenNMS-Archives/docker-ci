@@ -12,7 +12,7 @@ RUN yum -y --enablerepo=epel install  \
 	&& yum -y --enablerepo='*' clean packages
 
 # Node.JS
-RUN curl --silent --location https://rpm.nodesource.com/setup_8.x | bash -
+RUN curl -k --silent --location https://rpm.nodesource.com/setup_8.x | bash -
 RUN yum -y install nodejs \
 	&& yum -y --enablerepo='*' clean packages
 RUN npm install -g yarn grunt

@@ -9,10 +9,12 @@ RUN yum -y --enablerepo=epel install  \
 	git \
 	make \
 	rpm-build \
-	&& yum -y --enablerepo='*' clean packages
+	&& yum -y --enablerepo='*' clean packages \
+	&& rm -rf /var/cache/yum
 
 # Node.JS
 RUN curl -k --silent --location https://rpm.nodesource.com/setup_8.x | bash -
 RUN yum -y install nodejs \
-	&& yum -y --enablerepo='*' clean packages
+	&& yum -y --enablerepo='*' clean packages \
+	&& rm -rf /var/cache/yum
 RUN npm install -g yarn grunt

@@ -22,6 +22,13 @@ RUN yum -y install \
 	&& yum -y --enablerepo='*' clean packages \
 	&& rm -rf /var/cache/yum
 
+# OpenNMS test dependencies
+RUN yum -y install \
+	jicmp \
+	jicmp6 \
+	&& yum -y --enablerepo='*' clean packages \
+	&& rm -rf /var/cache/yum
+
 COPY *.sh settings.xml /
 
 #ARG GIT_URL=https://github.com/OpenNMS/opennms.git

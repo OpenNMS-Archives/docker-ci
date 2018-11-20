@@ -17,6 +17,7 @@ RUN yum -y install  \
 	ed \
 	expect \
 	git \
+	net-snmp \
 	openssh-clients \
 	openssh-server \
 	postgresql \

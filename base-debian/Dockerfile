@@ -25,6 +25,7 @@ RUN apt-get update && \
 	openssh-client \
 	openssh-server \
 	rsync \
+	snmp \
 	sudo \
 	unzip \
 	&& apt-get clean

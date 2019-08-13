@@ -24,6 +24,7 @@ RUN yum -y install \
 	&& yum -y --enablerepo='*' clean packages \
 	&& rm -rf /var/cache/yum
 
+RUN gem install rb-inotify -v 0.9.10
 RUN gem install sass
 
 ENV JAVA_HOME /usr/lib/jvm/java-1.7.0-openjdk

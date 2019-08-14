@@ -9,8 +9,10 @@ RUN yum -y --enablerepo=epel install  \
 	git \
 	make \
 	rpm-build \
+	"https://copr-be.cloud.fedoraproject.org/results/@mock/mock-stable/epel-7-x86_64/00995263-mock/mock-1.4.16-1.el7.noarch.rpm" \
 	&& yum -y --enablerepo='*' clean packages \
 	&& rm -rf /var/cache/yum
+RUN adduser -r -u 1000 -g mock mock
 
 # OpenNMS build dependencies
 RUN yum -y install \

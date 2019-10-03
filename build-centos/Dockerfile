@@ -3,14 +3,16 @@ MAINTAINER ranger@opennms.org
 
 LABEL id=org.opennms.bamboo.build.centos
 
+RUN curl -L -o /etc/yum.repos.d/mock.repo https://copr.fedorainfracloud.org/coprs/g/mock/mock-stable/repo/epel-7/group_mock-mock-stable-epel-7.repo
+
 # Build tools
 RUN yum -y --enablerepo=epel install  \
 	gcc-c++ \
 	git \
 	make \
+	mock \
 	rpm-build \
 	yum-utils \
-	"https://copr-be.cloud.fedoraproject.org/results/@mock/mock-stable/epel-7-x86_64/00995263-mock/mock-1.4.16-1.el7.noarch.rpm" \
 	&& yum -y --enablerepo='*' clean packages \
 	&& rm -rf /var/cache/yum
 RUN adduser -r -u 1000 -g mock mock

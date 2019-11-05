@@ -18,14 +18,22 @@ RUN yum -y --enablerepo=epel install  \
 RUN adduser -r -u 1000 -g mock mock
 
 # OpenNMS build dependencies
-RUN yum -y install \
-	mingw32-nsis \
-	postgresql \
-	R \
-	rrdtool \
-	ruby \
-	ruby-devel \
-	rubygems \
+RUN yum -y \
+	--enablerepo='epel' \
+	--enablerepo='opennms-repo-stable-common' \
+	--enablerepo='opennms-repo-stable-rhel7' \
+	install \
+		jicmp \
+		jicmp6 \
+		jrrd \
+		jrrd2 \
+		mingw32-nsis \
+		postgresql \
+		R \
+		rrdtool \
+		ruby \
+		ruby-devel \
+		rubygems \
 	&& yum -y --enablerepo='*' clean packages \
 	&& rm -rf /var/cache/yum
 

@@ -1,4 +1,4 @@
-FROM debian:8
+FROM debian:stretch
 MAINTAINER ranger@opennms.org
 
 LABEL id=org.opennms.bamboo.base.debian
@@ -10,6 +10,7 @@ RUN apt-get update && \
 	apt-get -y install \
 	apt-transport-https \
 	curl \
+	gnupg2 \
 	software-properties-common \
 	wget \
 	&& apt-get clean

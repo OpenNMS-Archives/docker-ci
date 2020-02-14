@@ -17,7 +17,7 @@ for IMAGE in \
 ; do
 	echo "* Building opennmsbamboo/${IMAGE}"
 	rsync -ar ./*.sh ./settings.xml "${IMAGE}/"
-	docker build -t "opennmsbamboo/${IMAGE}" "${IMAGE}"
+	docker build -t "opennmsbamboo/${IMAGE}:develop" "${IMAGE}"
 done
 
 cd "${ORIGDIR}"

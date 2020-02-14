@@ -4,7 +4,7 @@ MAINTAINER ranger@opennms.org
 LABEL id=org.opennms.bamboo.smoke
 
 # Build tools
-RUN yum -y --enablerepo=epel install  \
+RUN yum -y --enablerepo=epel --enablerepo=PowerTools install  \
 	gcc-c++ \
 	git \
 	make \
@@ -13,7 +13,7 @@ RUN yum -y --enablerepo=epel install  \
 	&& rm -rf /var/cache/yum
 
 # OpenNMS build dependencies
-RUN yum -y install \
+RUN yum -y --enablerepo=PowerTools install \
 	mingw32-nsis \
 	postgresql \
 	R \
@@ -23,7 +23,7 @@ RUN yum -y install \
 	&& rm -rf /var/cache/yum
 
 # OpenNMS test dependencies
-RUN yum -y install \
+RUN yum -y --enablerepo=PowerTools install \
 	jicmp \
 	jicmp6 \
 	&& yum -y --enablerepo='*' clean packages \
@@ -34,6 +34,6 @@ COPY *.sh settings.xml /
 #ARG GIT_URL=https://github.com/OpenNMS/opennms.git
 #ARG GIT_HASH
 
-ENV JAVA_HOME /usr/lib/jvm/java-1.7.0-openjdk
+ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk
 
 ENTRYPOINT ["/docker-cmd.sh"]

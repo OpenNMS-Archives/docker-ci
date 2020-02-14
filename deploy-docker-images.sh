@@ -12,5 +12,5 @@ for IMAGE in \
 	itests \
 ; do
 	echo "* Deploying opennmsbamboo/${IMAGE} to Docker Hub"
-	docker push "opennmsbamboo/${IMAGE}"
+	docker push "opennmsbamboo/${IMAGE}:develop"
 done
